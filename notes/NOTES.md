@@ -23,3 +23,29 @@ device and application management features into their solutions.
   
 > Through this API, IT administrators can get information about applications and their available   
 manage configurations to help them configure their device policies.
+
+## Policies and commands
+There are two methods that a mobile device management system will use to interact with a registered Android device through the installed device policy controller. 
+These methods are **policies** and **commands**.
+
+### Policies
+A **policy** is a collection of settings defining the state in which a managed device should operate. 
+> An important thing to remember is that a managed device can only be assigned a single policy at a time. 
+
+#### Policy Functions
+These policies can be designed to:
+- Disable certain hardware components
+- Restrict a user's access to the system
+- Define the applications that should be installed
+- Configure network settings.
+
+### Commands
+Commands are actions issued to a device by a Device Management System and carried out by the device policy controller.
+
+#### Supported Commands:
+When utilizing the Android management API, the only supported commands are:
+- Locking the device
+- Rebooting the device
+- Resetting the password.
+
+NOTE: You can check out the reference guide for that API [here.]([https://developers.google.com/android/management/reference/rest/v1/enterprises.devices/issueCommand#Command]
