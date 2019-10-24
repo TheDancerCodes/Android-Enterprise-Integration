@@ -49,3 +49,27 @@ When utilizing the Android management API, the only supported commands are:
 - Resetting the password.
 
 NOTE: You can check out the reference guide for that API [here.]([https://developers.google.com/android/management/reference/rest/v1/enterprises.devices/issueCommand#Command]
+
+## The Device Administrator
+
+|  Employee Owned | Enterprise Owned   |   
+|---|---|
+| DPC runs on as profile owner   |  DPC runs as device owner    
+|  Work data is in separate profile |   Work data is not automatically segregated
+|Device admin is work profile   | Device admin for whole system | 
+
+> NOTE:  Device Owner Mode can only be enabled during the initial set up of the device.
+
+### Reasons for Device Owner Restriction:
+- Prevent malware from obtaining device admin permissions.
+- Mitigate privacy concerns if device was previously owned.
+- Restrict device to one Mobile Device Management System at a time.
+
+> NOTE: In both of these cases, the device policy controller operates as a device admin. 
+
+|  Profile Owner | Device Owner   |   
+|---|---|
+| DPC can remotely monitor the device status (CPU usage & system temperatures)   |  Profile owner capabilities (can do everything a profile owner can do)   
+|  Control Hardware (Disable the camera or fingerprint reader) |   Restrict user access to settings
+| Set password policies on the device   | Enabling or disabling radios (WiFi, Bluetooth, and data) | 
+| Wipe profile data   | Initiating factory reset of the device & many more.. | 
