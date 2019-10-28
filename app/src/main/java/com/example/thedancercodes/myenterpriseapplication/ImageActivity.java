@@ -93,6 +93,11 @@ public class ImageActivity extends AppCompatActivity {
                         .into(fullScreenImage);
             }
         }
+
+        // Now when this activity starts, it will attempt to startLockTask mode.
+        // If a mobile device management system hasn't whitelisted this application,
+        // then it will pin the activity instead.
+        startLockTask();
     }
 
     @Override
@@ -102,5 +107,24 @@ public class ImageActivity extends AppCompatActivity {
         unregisterReceiver(restrictionsReceiver);
 
         super.onDestroy();
+    }
+
+    // Although Lock Task Mode disables the status bar, home, and overview buttons,
+    // it does not disable the back button.
+    // For this reason, we should make sure we handle Back button presses in our locked activities.
+
+    /**
+     * Take care of popping the fragment back stack or finishing the activity
+     * as appropriate.
+     */
+    @Override
+    public void onBackPressed() {
+
+        /*
+           We delete the call to super so that this button no longer does anything.
+           This is because we do not want to allow our users to go back to the main activity
+           as that is not configured for Lock Task Mode.
+        */
+        // super.onBackPressed();
     }
 }
