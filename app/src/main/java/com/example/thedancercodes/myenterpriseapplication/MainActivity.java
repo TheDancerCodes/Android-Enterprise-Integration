@@ -1,6 +1,8 @@
 package com.example.thedancercodes.myenterpriseapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.RestrictionsManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     Button imageModeButton;
 
     Intent startImageActivityIntent;
+
+    RestrictionsManager restrictionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +47,31 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(startImageActivityIntent);
             }
         });
+
+        // Define RestrictionsManager Object
+        restrictionsManager = (RestrictionsManager) getSystemService(Context.RESTRICTIONS_SERVICE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        /**
+         * Google warns us that the getApplicationRestrictions method is costly to run,
+         * and should be called as sparingly as possible.
+         *
+         * It is advised, to cache this configuration after starting or resuming and
+         * listening for future changes.
+         */
+
+        Bundle applicationRestrictions = restrictionsManager.getApplicationRestrictions();
+
+        // Checking that the Bundle has content.
+        // If it has content, we can start pulling values from it.
+        if (applicationRestrictions.size() > 0) {
+            welcomeMessage = applicationRestrictions.getString("welcomeButtonMessage");
+            isImageModeEnabled = applicationRestrictions.getBoolean("isImageModeEnabled");
+        }
 
         imageModeButton.setEnabled(isImageModeEnabled);
     }
