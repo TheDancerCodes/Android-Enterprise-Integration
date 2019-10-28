@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<restrictions xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        NOTE:
+        For each option we would like to define for our application,
+        we need to create a singular restriction element.
+    -->
+
+    <!-- Control set of texts within the app-->
+    <restriction
+        android:defaultValue="@string/welcome_button_message_default"
+        android:key="welcomeButtonMessage"
+        android:restrictionType="string" />
+
+    <!-- Allow for app image mode to be turned on and off -->
+    <restriction
+        android:defaultValue="false"
+        android:key="isImageModeEnabled"
+        android:restrictionType="bool" />
+
+    <!-- Control the URL from which our image is pulled from -->
+    <restriction
+        android:defaultValue="@string/image_url_default"
+        android:key="imageUrl"
+        android:restrictionType="string" />
+
+</restrictions>
