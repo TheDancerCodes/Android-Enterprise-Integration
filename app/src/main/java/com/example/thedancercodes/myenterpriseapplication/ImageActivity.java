@@ -1,6 +1,9 @@
 package com.example.thedancercodes.myenterpriseapplication;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.RestrictionsManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +21,9 @@ public class ImageActivity extends AppCompatActivity {
     // Create the Restrictions Manager object
     RestrictionsManager myRestrictionsManager;
 
+    // Create BroadcastReceiver
+    BroadcastReceiver restrictionsReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +32,43 @@ public class ImageActivity extends AppCompatActivity {
         fullScreenImage = findViewById(R.id.fullScreenImage);
 
         myRestrictionsManager = (RestrictionsManager) getSystemService(Context.RESTRICTIONS_SERVICE);
+
+        // Define IntentFilter
+        IntentFilter restrictionsFilter = new IntentFilter(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED);
+
+        // Define the BroadcastReceiver
+        restrictionsReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // Check the app restrictions.
+                Bundle applicationRestrictions = myRestrictionsManager.getApplicationRestrictions();
+
+                // Check that the Bundle has content
+                if (applicationRestrictions.size() > 0) {
+
+                    // Set new image URL
+                    imageUrl = applicationRestrictions.getString("imageUrl");
+
+                    // Checking that the URL is valid
+                    if (URLUtil.isValidUrl(imageUrl)) {
+
+                        // Make sure Image update call is done on the our UI thread.
+                        // Let's move this into a new runnable that we post to our image.
+                        fullScreenImage.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Glide.with(getApplicationContext())
+                                        .load(imageUrl)
+                                        .centerCrop()
+                                        .into(fullScreenImage);
+
+                            }
+                        });
+                    }
+                }
+            }
+        };
     }
 
     @Override
@@ -50,5 +93,14 @@ public class ImageActivity extends AppCompatActivity {
                         .into(fullScreenImage);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        // Unregister the BroadcastReceiver
+        unregisterReceiver(restrictionsReceiver);
+
+        super.onDestroy();
     }
 }
